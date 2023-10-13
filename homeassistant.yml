@@ -1,0 +1,67 @@
+services:
+  homeassistant:
+
+    container_name: "homeassistant"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "LANG=C.UTF-8"
+      - "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "PGID=1000"
+      - "PUID=1000"
+      - "S6_BEHAVIOUR_IF_STAGE2_FAILS=2"
+      - "S6_CMD_WAIT_FOR_SERVICES=1"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_SERVICES_GRACETIME=220000"
+      - "S6_SERVICES_READYTIME=50"
+      - "TZ=Europe/Madrid"
+      - "WHEELS_LINKS=https://wheels.home-assistant.io/musllinux/"
+
+    hostname: "hassio"
+
+    image: "homeassistant/home-assistant:latest"
+
+    ipc: "private"
+
+    labels:
+      io.hass.arch: "aarch64"
+      io.hass.base.arch: "aarch64"
+      io.hass.base.image: "ghcr.io/home-assistant/aarch64-base:3.18"
+      io.hass.base.name: "python"
+      io.hass.base.version: "2023.06.0"
+      io.hass.type: "core"
+      io.hass.version: "2023.6.3"
+      org.opencontainers.image.authors: "The Home Assistant Authors"
+      org.opencontainers.image.created: "2023-06-23 17:13:16+00:00"
+      org.opencontainers.image.description: "Open-source home automation platform\
+        \ running on Python 3"
+      org.opencontainers.image.documentation: "https://www.home-assistant.io/docs/"
+      org.opencontainers.image.licenses: "Apache License 2.0"
+      org.opencontainers.image.source: "https://github.com/home-assistant/core"
+      org.opencontainers.image.title: "Home Assistant"
+      org.opencontainers.image.url: "https://www.home-assistant.io/"
+      org.opencontainers.image.version: "2023.6.3"
+
+    logging:
+      driver: "json-file"
+      options: {}
+
+    network_mode: "host"
+
+    ports:
+      - "8123:8123/tcp"
+
+    privileged: true
+
+    restart: "unless-stopped"
+
+    security_opt:
+      - "label=disable"
+
+    volumes:
+      - "/opt/docker/homeassistant/config:/config"
+      - "/run/dbus:/run/dbus:ro"
+
+    working_dir: "/config"

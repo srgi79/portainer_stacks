@@ -1,0 +1,31 @@
+services:
+  prometheus:
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
+    container_name: "prometheus"
+    entrypoint:
+      - "/bin/prometheus"
+    environment:
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    hostname: "hassio-prometheus"
+    image: "prom/prometheus"
+    ipc: "private"
+    labels:
+      maintainer: "The Prometheus Authors <prometheus-developers@googlegroups.com>"
+    logging:
+      driver: "json-file"
+      options: {}
+    network_mode: "bridge"
+    ports:
+      - "9090:9090/tcp"
+    restart: "unless-stopped"
+    user: "nobody"
+    volumes:
+      - "/opt/docker/prometheus:/etc/prometheus"
+      - "prometheus_data:/prometheus"
+    working_dir: "/prometheus"
+volumes:
+  prometheus_data:

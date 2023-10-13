@@ -1,0 +1,14 @@
+services:
+  mqtt:
+    container_name: mosquitto
+    image: eclipse-mosquitto
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - /opt/docker/mosquitto/config:/mosquitto/config
+      - /opt/docker/mosquitto/logs:/mosquitto/log
+      - /opt/docker/mosquitto/data:/mosquitto/data
+    restart: always
+    environment:
+      - TZ=Europe/Madrid 

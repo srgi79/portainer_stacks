@@ -1,0 +1,17 @@
+#https://github.com/sdushantha/tmpmail
+services:
+  temp_mail:
+    command:
+      - "/bin/sh"
+    container_name: "temp_mail"
+    environment:
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    hostname: "hassio-tempmail"
+    image: "mail"
+    ipc: "private"
+    logging:
+      driver: "json-file"
+      options: {}
+    network_mode: "bridge"
+    stdin_open: true
+    tty: true
