@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  ownfoil:
+    container_name: ownfoil
+    image: a1ex4/ownfoil
+    environment:
+      # For write permission in config directory
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - games:/games
+      - /opt/docker/ownfoil/config:/config
+    ports:
+      - "8465:8465"
+
+volumes:
+  games:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: "//10.0.0.110/Public/01_SWITCH"
+      o: "username=guest,password=guest,uid=1000,gid=1000"
