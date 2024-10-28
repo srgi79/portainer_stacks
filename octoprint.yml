@@ -24,6 +24,7 @@ services:
 
   config-editor:
     image: linuxserver/code-server
+    container_name: octoprint-code-server
     ports:
       - 8443:8443
     depends_on:
