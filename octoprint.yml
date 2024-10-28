@@ -1,0 +1,45 @@
+services:
+  octoprint:
+    image: octoprint/octoprint:latest
+    container_name: octoprint
+    restart: unless-stopped
+    ports:
+      - 80:80
+    devices:
+    #ls -la /dev/v4l/by-id/
+    #ls -la /dev/serial/by-id/
+
+    # PRINTER USB
+      - /dev/serial/by-id/usb-FTDI_FT232R_USB_UART_AC00FF2O-if00-port0:/dev/ttyUSB0
+    # SIO CONTROL USB
+      - /dev/serial/by-id/usb-1a86_USB2.0-Serial-if00-port0:/dev/ttySIO0
+    # CAMERA USB
+      - /dev/v4l/by-id/usb-046d_0825_20AF85A0-video-index0:/dev/video0
+    volumes:
+     - ./octoprint:/octoprint
+    environment:
+      - ENABLE_MJPG_STREAMER=true
+      - TZ=Europe/Madrid
+
+
+  config-editor:
+    image: linuxserver/code-server
+    ports:
+      - 8443:8443
+    depends_on:
+      - octoprint
+    restart: unless-stopped
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Europe/Madrid
+    volumes:
+      - ./octoprint:/octoprint
+
+volumes:
+  octoprint:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /opt/docker/octoprint
