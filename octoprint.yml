@@ -4,7 +4,8 @@ services:
     container_name: octoprint
     restart: unless-stopped
     ports:
-      - 80:80
+      - 5000:5000
+      - 5001:8080 #http://10.0.0.131:5001/?action=stream
     devices:
     #ls -la /dev/v4l/by-id/
     #ls -la /dev/serial/by-id/
@@ -12,13 +13,15 @@ services:
     # PRINTER USB
       - /dev/serial/by-id/usb-FTDI_FT232R_USB_UART_AC00FF2O-if00-port0:/dev/ttyUSB0
     # SIO CONTROL USB
-      - /dev/serial/by-id/usb-1a86_USB2.0-Serial-if00-port0:/dev/ttySIO0
+      - /dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0:/dev/ttySIO0
     # CAMERA USB
       - /dev/v4l/by-id/usb-046d_0825_20AF85A0-video-index0:/dev/video0
     volumes:
      - ./octoprint:/octoprint
     environment:
       - ENABLE_MJPG_STREAMER=true
+      - CAMERA_DEV=/dev/video0
+      - MJPG_STREAMER_INPUT="-y -n -r 1280x960 -f 30
       - TZ=Europe/Madrid
 
 
